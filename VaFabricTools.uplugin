@@ -1,0 +1,22 @@
+{
+	"FileVersion" : 3,
+	
+	"FriendlyName" : "VaFabricTools",
+	"Version" : 1,
+	"VersionName" : "1.0-a1",
+	"CreatedBy" : "Vladimir Alyamkin",
+	"CreatedByURL" : "http://alyamkin.com",
+	"EngineVersion" : "4.14.0",
+	"Description" : "",
+	"Category" : "Analytics",
+	"MarketplaceURL" : "",
+
+	"Modules" :
+	[
+		{
+			"Name" : "CrashlyticsKit",
+			"Type" : "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	]
+}
