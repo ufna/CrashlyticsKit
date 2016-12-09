@@ -13,4 +13,4 @@ DECLARE_LOG_CATEGORY_EXTERN(LogCrashlytics, Log, All);
 
 #include "ICrashlyticsKit.h"
 
-//#include "CrashlyticsKitClasses.h"
+#include "CrashlyticsKitClasses.h"
