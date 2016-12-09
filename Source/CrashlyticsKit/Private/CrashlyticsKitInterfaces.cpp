@@ -2,8 +2,7 @@
 
 #include "CrashlyticsKitPrivatePCH.h"
 
-UCrashlyticsKitSettings::UCrashlyticsKitSettings(const FObjectInitializer& ObjectInitializer)
+UCrashlyticsKitProxyInterface::UCrashlyticsKitProxyInterface(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
 }

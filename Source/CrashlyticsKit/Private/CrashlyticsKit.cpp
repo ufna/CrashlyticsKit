@@ -28,7 +28,7 @@ class FCrashlyticsKit : public ICrashlyticsKit
 	}
 };
 
-IMPLEMENT_MODULE( FCrashlyticsKit, CrashlyticsKit )
+IMPLEMENT_MODULE(FCrashlyticsKit, CrashlyticsKit)
 
 DEFINE_LOG_CATEGORY(LogCrashlytics);
 
