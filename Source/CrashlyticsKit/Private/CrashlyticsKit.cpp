@@ -27,8 +27,19 @@ class FCrashlyticsKit : public ICrashlyticsKit
 			);
 		}
 
+		// Proxy class depends on platform
+		UClass* KitPlatformClass = nullptr;
+#if WITH_CRASHLYTICS
+#if PLATFORM_IOS
+		KitPlatformClass = UCrashlyticsKit_iOS::StaticClass();
+#elif PLATFORM_ANDROID
+		KitPlatformClass = UCrashlyticsKit_Android::StaticClass();
+#endif
+#endif
+
 		// Create crashlytics kit proxy and initalize module by default
-		CrashlyticsKit = NewObject<UCrashlyticsKitProxy>(GetTransientPackage(), "CrashlyticsKitProxy", RF_Standalone);
+		CrashlyticsKit = NewObject<UCrashlyticsKitProxy>(GetTransientPackage(), KitPlatformClass);
+		CrashlyticsKit->SetFlags(RF_Standalone);
 		CrashlyticsKit->AddToRoot();
 
 		// Check for manual kit initialization

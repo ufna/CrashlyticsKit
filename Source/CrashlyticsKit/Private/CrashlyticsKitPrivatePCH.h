@@ -18,3 +18,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogVftCrashlytics, Log, All);
 #include "ICrashlyticsKit.h"
 
 #include "CrashlyticsKitClasses.h"
+
+#include "CrashlyticsKit_iOS.h"
+#include "CrashlyticsKit_Android.h"

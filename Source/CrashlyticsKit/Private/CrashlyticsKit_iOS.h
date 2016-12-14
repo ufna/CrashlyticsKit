@@ -5,7 +5,7 @@
 #include "CrashlyticsKit_iOS.generated.h"
 
 UCLASS()
-class CRASHLYTICSKIT_API UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
+class UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
 {
 	GENERATED_UCLASS_BODY()
 

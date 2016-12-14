@@ -8,7 +8,7 @@ namespace UnrealBuildTool.Rules
     {
         public CrashlyticsKit(TargetInfo Target)
         {
-            const bool bEnableCrashlyticsKit = false;
+            const bool bEnableCrashlyticsKit = true;
             Definitions.Add("WITH_CRASHLYTICS=" + (bEnableCrashlyticsKit ? "1" : "0"));
 
             PrivateIncludePaths.AddRange(
