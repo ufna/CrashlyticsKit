@@ -42,11 +42,13 @@ class FCrashlyticsKit : public ICrashlyticsKit
 		CrashlyticsKit->SetFlags(RF_Standalone);
 		CrashlyticsKit->AddToRoot();
 
+#if WITH_CRASHLYTICS
 		// Check for manual kit initialization
 		if (KitSettings->bCrashlyticsManualInit == false)
 		{
 			CrashlyticsKit->InitCrashlytics();
 		}
+#endif
 	}
 
 	virtual void ShutdownModule() override

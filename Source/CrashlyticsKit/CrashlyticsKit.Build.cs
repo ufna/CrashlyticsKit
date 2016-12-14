@@ -51,6 +51,17 @@ namespace UnrealBuildTool.Rules
                         )
                     );
                 }
+                else if (Target.Platform == UnrealTargetPlatform.Android)
+                {
+                    PublicDependencyModuleNames.AddRange(
+                        new string[]
+                        {
+                           "Launch"
+                        });
+
+                    string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, BuildConfiguration.RelativeEnginePath);
+                    AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(PluginPath, "CrashlyticsKit_APL.xml")));
+                }
             }
         }
     }

@@ -2,8 +2,6 @@
 
 #pragma once
 
-#if WITH_CRASHLYTICS && PLATFORM_IOS
-
 #include "CrashlyticsKit_iOS.generated.h"
 
 UCLASS()
@@ -11,6 +9,7 @@ class UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
 {
 	GENERATED_UCLASS_BODY()
 
+#if WITH_CRASHLYTICS && PLATFORM_IOS
 	// Begin ICrashlyticsKitProxyInterface
 	virtual void InitCrashlytics() override;
 	virtual void ForceCrash() override;
@@ -20,6 +19,6 @@ class UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
 	virtual void SetUserName(FString UserName) override;
 	virtual void WriteLog(FString Log) override;
 	// End ICrashlyticsKitProxyInterface
-};
-
 #endif // WITH_CRASHLYTICS && PLATFORM_IOS
+
+};

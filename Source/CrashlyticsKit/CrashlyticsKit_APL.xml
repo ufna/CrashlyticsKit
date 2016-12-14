@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VaFabricTools plugin additions-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+  <init>
+    <log text="Crashlytics Kit Android Initialization"/>
+    <setStringFromProperty result="CrashlyticsApiKey" ini="Engine" section="/Script/CrashlyticsKit.CrashlyticsKitSettings" property="CrashlyticsApiKey" default=""/>
+  </init>
+
+  <resourceCopies>
+    <copyFile src="$S(PluginDir)/../../ThirdParty/AndroidLibs/$S(Architecture)/libcrashlytics.so" dst="$S(BuildDir)/libs/armeabi-v7a/libcrashlytics.so" />
+    <copyFile src="$S(PluginDir)/../../ThirdParty/AndroidLibs/$S(Architecture)/libcrashlytics-envelope.so" dst="$S(BuildDir)/libs/armeabi-v7a/libcrashlytics-envelope.so" />
+    <copyFile src="$S(PluginDir)/../../ThirdParty/AndroidLibs/$S(Architecture)/libunwind-crashlytics.so" dst="$S(BuildDir)/libs/armeabi-v7a/libunwind-crashlytics.so" />
+  </resourceCopies>
+
+  <androidManifestUpdates>
+    <addElements tag="application">
+      <meta-data android:name="io.fabric.ApiKey" />
+    </addElements>
+
+    <loopElements tag="meta-data">
+      <setStringFromAttribute result="metaDataName" tag="$" name="android:name"/>
+      <setBoolIsEqual result="bFabricApiKey" arg1="$S(metaDataName)" arg2="io.fabric.ApiKey"/>
+      <if condition="bFabricApiKey">
+        <true>
+          <addAttribute tag="$" name="android:value" value="$S(CrashlyticsApiKey)"/>
+        </true>
+      </if>
+    </loopElements>
+  </androidManifestUpdates>
+
+  <proguardAdditions>
+    <insert>
+      -keepattributes *Annotation*
+      -keepattributes SourceFile,LineNumberTable
+
+      -keep public class * extends java.lang.Exception
+      -keep class com.crashlytics.** { *; }
+
+      -dontwarn com.crashlytics.**
+    </insert>
+  </proguardAdditions>
+
+  <prebuildCopies>
+    <copyDir src="$S(PluginDir)/../../ThirdParty/Android" dst="$S(BuildDir)" />
+  </prebuildCopies>
+
+  <gameActivityImportAdditions>
+    <insert>
+      import io.fabric.sdk.android.Fabric;
+      import com.crashlytics.android.Crashlytics;
+      import com.crashlytics.android.ndk.CrashlyticsNdk;
+    </insert>
+  </gameActivityImportAdditions>
+
+  <gameActivityClassAdditions>
+    <insert>
+      public boolean bCrashlyticsInitialized = false;  
+      
+      public void AndroidThunkJava_ForceCrash() 
+      {
+        Crashlytics.getInstance().crash();
+      }
+      
+      public void AndroidThunkJava_ForceException() 
+      {
+        throw new RuntimeException("This is a crash");
+      }
+      
+      public void AndroidThunkJava_SetUserIdentifier(String UserIdentifier) 
+      {
+        Crashlytics.setUserIdentifier(UserIdentifier);
+      }
+
+      public void AndroidThunkJava_SetUserEmail(String UserEmail) 
+      {
+        Crashlytics.setUserEmail(UserEmail);
+      }
+      
+      public void AndroidThunkJava_SetUserName(String UserName) 
+      {
+        Crashlytics.setUserName(UserName);
+      }
+      
+      public void AndroidThunkJava_WriteLog(String Log) 
+      {
+        Crashlytics.log(Log);
+      }
+    </insert>
+  </gameActivityClassAdditions>
+
+  <gameActivityOnCreateAdditions>
+    <insert>
+      if(!bCrashlyticsInitialized) 
+      {
+        final Fabric fabric = new Fabric.Builder(GameActivity._activity)
+                                        .kits(new Crashlytics(), new CrashlyticsNdk())
+                                        .build();
+        Fabric.with(fabric);
+
+        bCrashlyticsInitialized = true;
+      }
+    </insert>
+  </gameActivityOnCreateAdditions>
+
+</root>

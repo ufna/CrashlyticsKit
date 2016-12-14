@@ -3,15 +3,17 @@
 #include "CrashlyticsKitPrivatePCH.h"
 
 #if WITH_CRASHLYTICS && PLATFORM_IOS
-
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
+	#import <Fabric/Fabric.h>
+	#import <Crashlytics/Crashlytics.h>
+#endif // WITH_CRASHLYTICS && PLATFORM_IOS
 
 UCrashlyticsKit_iOS::UCrashlyticsKit_iOS(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 
 }
+
+#if WITH_CRASHLYTICS && PLATFORM_IOS
 
 void UCrashlyticsKit_iOS::InitCrashlytics()
 {

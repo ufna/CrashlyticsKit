@@ -9,6 +9,7 @@ class UCrashlyticsKit_Android : public UCrashlyticsKitProxy
 {
 	GENERATED_UCLASS_BODY()
 
+#if WITH_CRASHLYTICS && PLATFORM_ANDROID
 	// Begin ICrashlyticsKitProxyInterface
 	virtual void InitCrashlytics() override;
 	virtual void ForceCrash() override;
@@ -18,4 +19,6 @@ class UCrashlyticsKit_Android : public UCrashlyticsKitProxy
 	virtual void SetUserName(FString UserName) override;
 	virtual void WriteLog(FString Log) override;
 	// End ICrashlyticsKitProxyInterface
+#endif // WITH_CRASHLYTICS && PLATFORM_ANDROID
+
 };
