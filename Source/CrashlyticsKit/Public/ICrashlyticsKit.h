@@ -4,6 +4,7 @@
 
 #include "ModuleManager.h"
 
+class UCrashlyticsKitProxy;
 
 /**
  * The public interface to this module.  In most cases, this interface is only public to sibling modules 
@@ -34,5 +35,10 @@ public:
 	{
 		return FModuleManager::Get().IsModuleLoaded( "CrashlyticsKit" );
 	}
+
+
+public:
+	UCrashlyticsKitProxy* CrashlyticsKit;
+
 };
 

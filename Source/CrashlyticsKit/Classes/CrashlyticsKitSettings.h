@@ -11,6 +11,10 @@ class UCrashlyticsKitSettings : public UObject
 	
 public:
 	/** Crashlitycs API Key */
-	UPROPERTY(Config, EditAnywhere, meta = (DisplayName = "Crashlytics API Key"))
+	UPROPERTY(Config, EditAnywhere)
 	FString CrashlyticsApiKey;
+
+	/** If yes, you should call Initialize() function for Kit manually */
+	UPROPERTY(Config, EditAnywhere)
+	bool bCrashlyticsManualInit;
 };

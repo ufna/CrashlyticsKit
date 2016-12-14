@@ -2,43 +2,38 @@
 
 #pragma once
 
-#include "ICrashlyticsKitProxy.generated.h"
+#include "CrashlyticsKitProxy.generated.h"
 
-UINTERFACE(Blueprintable, meta=(CannotImplementInterfaceInBlueprint))
-class UCrashlyticsKitProxyInterface : public UInterface
+UCLASS()
+class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 {
-	GENERATED_UINTERFACE_BODY()
-};
-
-class CRASHLYTICSKIT_API ICrashlyticsKitProxyInterface
-{
-	GENERATED_IINTERFACE_BODY()
+	GENERATED_UCLASS_BODY()
 
 	/** Initialize Crashlytics global object */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void InitCrashlytics() = 0;
+	virtual void InitCrashlytics();
 
 	/** Force crash */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void ForceCrash() = 0;
+	virtual void ForceCrash();
 
 	/** Force exception */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void ForceException() = 0;
+	virtual void ForceException();
 
 	/** */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void SetUserIdentifier(FString UserIdentifier) = 0;
+	virtual void SetUserIdentifier(FString UserIdentifier);
 
 	/** */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void SetUserEmail(FString UserEmail) = 0;
+	virtual void SetUserEmail(FString UserEmail);
 
 	/** */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void SetUserName(FString UserName) = 0;
+	virtual void SetUserName(FString UserName);
 
 	/** */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	virtual void WriteLog(FString Log) = 0;
+	virtual void WriteLog(FString Log);
 };
