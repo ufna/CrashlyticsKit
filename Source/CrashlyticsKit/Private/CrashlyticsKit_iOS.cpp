@@ -2,6 +2,11 @@
 
 #include "CrashlyticsKitPrivatePCH.h"
 
+#if WITH_CRASHLYTICS && PLATFORM_IOS
+
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 UCrashlyticsKit_iOS::UCrashlyticsKit_iOS(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -10,35 +15,53 @@ UCrashlyticsKit_iOS::UCrashlyticsKit_iOS(const FObjectInitializer& ObjectInitial
 
 void UCrashlyticsKit_iOS::InitCrashlytics()
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Initialize Crashlytics Kit with iOS SDK"), *VA_FUNC_LINE);
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Fabric with : @[[Crashlytics class]]];
+	});
 }
 
 void UCrashlyticsKit_iOS::ForceCrash()
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[CrashlyticsKit crash];
+	});
 }
 
 void UCrashlyticsKit_iOS::ForceException()
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[CrashlyticsKit throwException];
+	});
 }
 
 void UCrashlyticsKit_iOS::SetUserIdentifier(FString UserIdentifier)
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[CrashlyticsKit setUserIdentifier : UserIdentifier.GetNSString()];
+	});
 }
 
 void UCrashlyticsKit_iOS::SetUserEmail(FString UserEmail)
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[CrashlyticsKit setUserEmail : UserEmail.GetNSString()];
+	});
 }
 
 void UCrashlyticsKit_iOS::SetUserName(FString UserName)
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[CrashlyticsKit setUserName : UserName.GetNSString()];
+	});
 }
 
 void UCrashlyticsKit_iOS::WriteLog(FString Log)
 {
-	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: ---"), *VA_FUNC_LINE);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		CLS_LOG(@"%@", Log.GetNSString());
+	});
 }
+
+#endif // WITH_CRASHLYTICS && PLATFORM_IOS

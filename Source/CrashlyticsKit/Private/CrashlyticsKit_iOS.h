@@ -2,6 +2,8 @@
 
 #pragma once
 
+#if WITH_CRASHLYTICS && PLATFORM_IOS
+
 #include "CrashlyticsKit_iOS.generated.h"
 
 UCLASS()
@@ -19,3 +21,5 @@ class UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
 	virtual void WriteLog(FString Log) override;
 	// End ICrashlyticsKitProxyInterface
 };
+
+#endif // WITH_CRASHLYTICS && PLATFORM_IOS
