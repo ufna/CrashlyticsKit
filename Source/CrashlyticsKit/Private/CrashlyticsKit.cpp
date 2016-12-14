@@ -28,7 +28,7 @@ class FCrashlyticsKit : public ICrashlyticsKit
 		}
 
 		// Proxy class depends on platform
-		UClass* KitPlatformClass = nullptr;
+		UClass* KitPlatformClass = UCrashlyticsKitProxy::StaticClass();
 #if WITH_CRASHLYTICS
 #if PLATFORM_IOS
 		KitPlatformClass = UCrashlyticsKit_iOS::StaticClass();
