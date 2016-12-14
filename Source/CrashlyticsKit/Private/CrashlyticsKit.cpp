@@ -11,7 +11,7 @@ class FCrashlyticsKit : public ICrashlyticsKit
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override
 	{
-		UCrashlyticsKitSettings* KitSettings = NewObject<UCrashlyticsKitSettings>(GetTransientPackage(), "CrashlyticsKitSettings", RF_Standalone);
+		KitSettings = NewObject<UCrashlyticsKitSettings>(GetTransientPackage(), "CrashlyticsKitSettings", RF_Standalone);
 		KitSettings->AddToRoot();
 
 		// We need to manually load the config properties here, as this module is loaded before the UObject system is setup to do this
