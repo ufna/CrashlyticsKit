@@ -38,15 +38,15 @@ class FCrashlyticsKit : public ICrashlyticsKit
 #endif
 
 		// Create crashlytics kit proxy and initalize module by default
-		CrashlyticsKit = NewObject<UCrashlyticsKitProxy>(GetTransientPackage(), KitPlatformClass);
-		CrashlyticsKit->SetFlags(RF_Standalone);
-		CrashlyticsKit->AddToRoot();
+		CrashlyticsKitProxy = NewObject<UCrashlyticsKitProxy>(GetTransientPackage(), KitPlatformClass);
+		CrashlyticsKitProxy->SetFlags(RF_Standalone);
+		CrashlyticsKitProxy->AddToRoot();
 
 #if WITH_CRASHLYTICS
 		// Check for manual kit initialization
 		if (KitSettings->bCrashlyticsManualInit == false)
 		{
-			CrashlyticsKit->InitCrashlytics();
+			CrashlyticsKitProxy->InitCrashlytics();
 		}
 #endif
 	}
@@ -61,12 +61,12 @@ class FCrashlyticsKit : public ICrashlyticsKit
 		if (!GExitPurge)
 		{
 			// If we're in exit purge, this object has already been destroyed
-			CrashlyticsKit->RemoveFromRoot();
+			CrashlyticsKitProxy->RemoveFromRoot();
 			KitSettings->RemoveFromRoot();
 		}
 		else
 		{
-			CrashlyticsKit = nullptr;
+			CrashlyticsKitProxy = nullptr;
 			KitSettings = nullptr;
 		}
 	}

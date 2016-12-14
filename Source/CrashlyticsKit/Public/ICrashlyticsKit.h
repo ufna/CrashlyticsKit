@@ -38,7 +38,7 @@ public:
 
 
 public:
-	UCrashlyticsKitProxy* CrashlyticsKit;
+	UCrashlyticsKitProxy* CrashlyticsKitProxy;
 
 };
 

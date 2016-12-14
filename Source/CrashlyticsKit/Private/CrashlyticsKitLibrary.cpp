@@ -10,5 +10,5 @@ UCrashlyticsKitLibrary::UCrashlyticsKitLibrary(const FObjectInitializer& ObjectI
 
 UCrashlyticsKitProxy* UCrashlyticsKitLibrary::GetCrashlyticsProxy()
 {
-	return ICrashlyticsKit::Get().CrashlyticsKit;
+	return ICrashlyticsKit::Get().CrashlyticsKitProxy;
 }
