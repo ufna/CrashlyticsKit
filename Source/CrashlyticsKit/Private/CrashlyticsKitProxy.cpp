@@ -24,20 +24,20 @@ void UCrashlyticsKitProxy::ForceException()
 
 void UCrashlyticsKitProxy::SetUserIdentifier(FString UserIdentifier)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Null proxy used"), *VA_FUNC_LINE);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *UserIdentifier);
 }
 
 void UCrashlyticsKitProxy::SetUserEmail(FString UserEmail)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Null proxy used"), *VA_FUNC_LINE);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *UserEmail);
 }
 
 void UCrashlyticsKitProxy::SetUserName(FString UserName)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Null proxy used"), *VA_FUNC_LINE);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *UserName);
 }
 
 void UCrashlyticsKitProxy::WriteLog(FString Log)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Null proxy used"), *VA_FUNC_LINE);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *Log);
 }
