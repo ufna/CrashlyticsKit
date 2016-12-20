@@ -39,7 +39,7 @@ class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 
 	/** */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
-	bool IsInitialized();
+	bool IsInitialized() const;
 
 protected:
 	/** */

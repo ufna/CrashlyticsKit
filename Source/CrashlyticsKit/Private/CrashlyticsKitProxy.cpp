@@ -43,7 +43,7 @@ void UCrashlyticsKitProxy::WriteLog(FString Log)
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *Log);
 }
 
-bool UCrashlyticsKitProxy::IsInitialized()
+bool UCrashlyticsKitProxy::IsInitialized() const
 {
 	return bCrashlyticsInitialized;
 }
