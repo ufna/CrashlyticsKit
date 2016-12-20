@@ -19,6 +19,14 @@ UCrashlyticsKit_Android::UCrashlyticsKit_Android(const FObjectInitializer& Objec
 void UCrashlyticsKit_Android::InitCrashlytics()
 {
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Initialize Crashlytics Kit with Android SDK"), *VA_FUNC_LINE);
+
+	if (bCrashlyticsInitialized)
+	{
+		UE_LOG(LogVftCrashlytics, Error, TEXT("%s: Trying to initialize Crashlytics when it's already been initialized!"), *VA_FUNC_LINE);
+		return;
+	}
+
+	bCrashlyticsInitialized = true;
 }
 
 void UCrashlyticsKit_Android::ForceCrash()
