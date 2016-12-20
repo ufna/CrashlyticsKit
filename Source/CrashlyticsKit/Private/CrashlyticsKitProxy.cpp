@@ -5,7 +5,7 @@
 UCrashlyticsKitProxy::UCrashlyticsKitProxy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	bCrashlyticsInitialized = true;
+	bCrashlyticsInitialized = false;
 }
 
 void UCrashlyticsKitProxy::InitCrashlytics()
