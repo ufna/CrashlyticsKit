@@ -19,9 +19,17 @@ void UCrashlyticsKit_iOS::InitCrashlytics()
 {
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Initialize Crashlytics Kit with iOS SDK"), *VA_FUNC_LINE);
 
+	if (bCrashlyticsInitialized)
+	{
+		UE_LOG(LogVftCrashlytics, Error, TEXT("%s: Trying to initialize Crashlytics when it's already been initialized!"), *VA_FUNC_LINE);
+		return;
+	}
+
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[Fabric with : @[[Crashlytics class]]];
 	});
+
+	bCrashlyticsInitialized = true;
 }
 
 void UCrashlyticsKit_iOS::ForceCrash()

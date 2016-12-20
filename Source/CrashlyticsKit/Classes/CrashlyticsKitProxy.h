@@ -36,4 +36,13 @@ class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 	/** */
 	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
 	virtual void WriteLog(FString Log);
+
+	/** */
+	UFUNCTION(BlueprintCallable, Category = CrashlyticsKit)
+	bool IsInitialized();
+
+protected:
+	/** */
+	bool bCrashlyticsInitialized;
+
 };

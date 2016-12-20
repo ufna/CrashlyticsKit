@@ -5,6 +5,7 @@
 UCrashlyticsKitProxy::UCrashlyticsKitProxy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	bCrashlyticsInitialized = true;
 }
 
 void UCrashlyticsKitProxy::InitCrashlytics()
@@ -40,4 +41,9 @@ void UCrashlyticsKitProxy::SetUserName(FString UserName)
 void UCrashlyticsKitProxy::WriteLog(FString Log)
 {
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *Log);
+}
+
+bool UCrashlyticsKitProxy::IsInitialized()
+{
+	return bCrashlyticsInitialized;
 }
