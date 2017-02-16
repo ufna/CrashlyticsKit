@@ -2,6 +2,9 @@
 
 #include "CrashlyticsKitPrivatePCH.h"
 
+#include "UObject/Package.h"
+#include "Misc/ConfigCacheIni.h"
+
 #include "ISettingsModule.h"
 
 #define LOCTEXT_NAMESPACE "CrashlyticsKit"
