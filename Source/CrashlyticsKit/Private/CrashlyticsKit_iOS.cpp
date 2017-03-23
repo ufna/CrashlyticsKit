@@ -15,6 +15,9 @@ UCrashlyticsKit_iOS::UCrashlyticsKit_iOS(const FObjectInitializer& ObjectInitial
 
 #if WITH_CRASHLYTICS && PLATFORM_IOS
 
+/////////////////////////////////////////////////////////////////////////
+// Setup
+
 void UCrashlyticsKit_iOS::InitCrashlytics()
 {
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Initialize Crashlytics Kit with iOS SDK"), *VA_FUNC_LINE);
@@ -72,6 +75,20 @@ void UCrashlyticsKit_iOS::WriteLog(FString Log)
 	dispatch_async(dispatch_get_main_queue(), ^{
 		CLS_LOG(@"%@", Log.GetNSString());
 	});
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+// Answers Events
+
+void UCrashlyticsKit_iOS::EventSignUp(FString Method, bool bSuccess, FString CustomAttributesJSON)
+{
+	
+}
+
+void UCrashlyticsKit_iOS::EventLogIn(FString Method, bool bSuccess, FString CustomAttributesJSON)
+{
+	
 }
 
 #endif // WITH_CRASHLYTICS && PLATFORM_IOS

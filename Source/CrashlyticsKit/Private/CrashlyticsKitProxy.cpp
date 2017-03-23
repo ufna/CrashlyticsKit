@@ -8,6 +8,9 @@ UCrashlyticsKitProxy::UCrashlyticsKitProxy(const FObjectInitializer& ObjectIniti
 	bCrashlyticsInitialized = false;
 }
 
+/////////////////////////////////////////////////////////////////////////
+// Setup
+
 void UCrashlyticsKitProxy::InitCrashlytics()
 {
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Null proxy used"), *VA_FUNC_LINE);
@@ -46,4 +49,18 @@ void UCrashlyticsKitProxy::WriteLog(FString Log)
 bool UCrashlyticsKitProxy::IsInitialized() const
 {
 	return bCrashlyticsInitialized;
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+// Answers Events
+
+void UCrashlyticsKitProxy::EventSignUp(FString Method, bool bSuccess, FString CustomAttributesJSON)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
+}
+
+void UCrashlyticsKitProxy::EventLogIn(FString Method, bool bSuccess, FString CustomAttributesJSON)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
 }
