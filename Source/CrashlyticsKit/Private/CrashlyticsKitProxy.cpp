@@ -65,7 +65,7 @@ void UCrashlyticsKitProxy::EventLogIn(FString Method, bool bSuccess, FString Cus
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) -- %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
 }
 
-void EventCustom(FString EventName, FString CustomAttributesJSON = "")
+void UCrashlyticsKitProxy::EventCustom(FString EventName, FString CustomAttributesJSON)
 {
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %s"), *VA_FUNC_LINE, *EventName, *CustomAttributesJSON);
 }
