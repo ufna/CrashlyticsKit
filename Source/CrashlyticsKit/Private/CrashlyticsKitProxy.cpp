@@ -57,10 +57,15 @@ bool UCrashlyticsKitProxy::IsInitialized() const
 
 void UCrashlyticsKitProxy::EventSignUp(FString Method, bool bSuccess, FString CustomAttributesJSON)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) -- %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
 }
 
 void UCrashlyticsKitProxy::EventLogIn(FString Method, bool bSuccess, FString CustomAttributesJSON)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d) -- %s"), *VA_FUNC_LINE, *Method, (int32)bSuccess, *CustomAttributesJSON);
+}
+
+void EventCustom(FString EventName, FString CustomAttributesJSON = "")
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %s"), *VA_FUNC_LINE, *EventName, *CustomAttributesJSON);
 }

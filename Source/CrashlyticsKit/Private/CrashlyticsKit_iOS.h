@@ -21,7 +21,15 @@ class UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
 
 	virtual void EventSignUp(FString Method, bool bSuccess, FString CustomAttributesJSON) override;
 	virtual void EventLogIn(FString Method, bool bSuccess, FString CustomAttributesJSON) override;
+	virtual void EventCustom(FString EventName, FString CustomAttributesJSON) override;
 	// End UCrashlyticsKitProxy interface
+	
+
+	/////////////////////////////////////////////////////////////////////////
+	// Helpers
+private:
+	static NSDictionary* GetNSDictionaryFromJSONString(const FString& JSONString);
+	
 #endif // WITH_CRASHLYTICS && PLATFORM_IOS
 
 };

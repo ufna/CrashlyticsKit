@@ -72,7 +72,9 @@ public:
 	/** @todo Event: Invite */
 	/** @todo Event: Level Start */
 	/** @todo Event: Level End */
-	/** @todo Event: Custom Event */
 
+	/** Event: Custom Event */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Answers", meta = (DisplayName = "Custom Event"))
+	virtual void EventCustom(FString EventName, FString CustomAttributesJSON = "");
 
 };

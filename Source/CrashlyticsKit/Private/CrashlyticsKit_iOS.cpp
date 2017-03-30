@@ -83,12 +83,54 @@ void UCrashlyticsKit_iOS::WriteLog(FString Log)
 
 void UCrashlyticsKit_iOS::EventSignUp(FString Method, bool bSuccess, FString CustomAttributesJSON)
 {
-	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Answers logSignUpWithMethod:Method.GetNSString()
+							 success:[NSNumber numberWithBool:bSuccess]
+					customAttributes:GetNSDictionaryFromJSONString(CustomAttributesJSON)];
+	});
 }
 
 void UCrashlyticsKit_iOS::EventLogIn(FString Method, bool bSuccess, FString CustomAttributesJSON)
 {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Answers logLoginWithMethod:Method.GetNSString()
+							success:[NSNumber numberWithBool:bSuccess]
+				   customAttributes:GetNSDictionaryFromJSONString(CustomAttributesJSON)];
+	});
+}
+
+void UCrashlyticsKit_iOS::EventCustom(FString EventName, FString CustomAttributesJSON)
+{
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Answers logCustomEventWithName : EventName.GetNSString()
+					   customAttributes : GetNSDictionaryFromJSONString(CustomAttributesJSON)];
+	});
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+// Helpers
+
+NSDictionary* UCrashlyticsKit_iOS::GetNSDictionaryFromJSONString(const FString& JSONString)
+{
+	if (JSONString.IsEmpty())
+	{
+		return nil;
+	}
 	
+	NSError *Err = nil;
+	NSData* Data = [JSONString.GetNSString() dataUsingEncoding:NSUTF8StringEncoding];
+	NSDictionary *Dict = [NSJSONSerialization JSONObjectWithData:Data
+														 options:0
+														   error:&Err];
+	
+	if (Err)
+	{
+		NSLog(@"Error converting string to JSON. String: \"%@\", error: %@", JSONString.GetNSString(), [Err description]);
+		return nil;
+	}
+	
+	return Dict;
 }
 
 #endif // WITH_CRASHLYTICS && PLATFORM_IOS
