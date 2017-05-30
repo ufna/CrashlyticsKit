@@ -72,9 +72,9 @@ void UCrashlyticsKit_iOS::SetUserName(FString UserName)
 
 void UCrashlyticsKit_iOS::WriteLog(FString Log)
 {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		CLS_LOG(@"%@", Log.GetNSString());
-	});
+	UCrashlyticsKitProxy::WriteLog(Log);
+	
+	CLS_LOG(@"%@", Log.GetNSString());
 }
 
 
