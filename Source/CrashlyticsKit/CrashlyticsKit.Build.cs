@@ -6,7 +6,7 @@ namespace UnrealBuildTool.Rules
 {
     public class CrashlyticsKit : ModuleRules
     {
-        public CrashlyticsKit(TargetInfo Target)
+        public CrashlyticsKit(ReadOnlyTargetRules Target) : base(Target)
         {
             const bool bEnableCrashlyticsKit = true;
             Definitions.Add("WITH_CRASHLYTICS=" + (bEnableCrashlyticsKit ? "1" : "0"));
