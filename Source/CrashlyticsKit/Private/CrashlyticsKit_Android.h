@@ -18,6 +18,7 @@ class UCrashlyticsKit_Android : public UCrashlyticsKitProxy
 	virtual void SetUserEmail(FString UserEmail) override;
 	virtual void SetUserName(FString UserName) override;
 	virtual void WriteLog(FString Log) override;
+	virtual void WriteError(FString Log, int32 Code) override;
 	// End UCrashlyticsKitProxy interface
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID
 

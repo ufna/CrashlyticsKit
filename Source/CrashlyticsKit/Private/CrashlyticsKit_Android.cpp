@@ -91,4 +91,9 @@ void UCrashlyticsKit_Android::WriteLog(FString Log)
 	}
 }
 
+void UCrashlyticsKit_Android::WriteError(FString Log, int32 Code)
+{
+	
+}
+
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID

@@ -46,9 +46,38 @@ void UCrashlyticsKitProxy::WriteLog(FString Log)
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *Log);
 }
 
+void UCrashlyticsKitProxy::WriteError(FString Log, int32 Code)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d)"), *VA_FUNC_LINE, *Log, Code);
+}
+
 bool UCrashlyticsKitProxy::IsInitialized() const
 {
 	return bCrashlyticsInitialized;
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+// Crashlytics Keys
+
+void UCrashlyticsKitProxy::SetObjectValue(FString Key, FString Value)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %s"), *VA_FUNC_LINE, *Key, *Value);
+}
+
+void UCrashlyticsKitProxy::SetIntValue(FString Key, int32 Value)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %d"), *VA_FUNC_LINE, *Key, Value);
+}
+
+void UCrashlyticsKitProxy::SetBoolValue(FString Key, bool Value)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %d"), *VA_FUNC_LINE, *Key, (int32)Value);
+}
+
+void UCrashlyticsKitProxy::SetFloatValue(FString Key, float Value)
+{
+	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %f"), *VA_FUNC_LINE, *Key, Value);
 }
 
 

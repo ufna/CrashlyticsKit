@@ -18,6 +18,12 @@ class UCrashlyticsKit_iOS : public UCrashlyticsKitProxy
 	virtual void SetUserEmail(FString UserEmail) override;
 	virtual void SetUserName(FString UserName) override;
 	virtual void WriteLog(FString Log) override;
+	virtual void WriteError(FString Log, int32 Code) override;
+
+	virtual void SetObjectValue(FString Key, FString Value) override;
+	virtual void SetIntValue(FString Key, int32 Value) override;
+	virtual void SetBoolValue(FString Key, bool Value) override;
+	virtual void SetFloatValue(FString Key, float Value) override;
 
 	virtual void EventSignUp(FString Method, bool bSuccess, FString CustomAttributesJSON) override;
 	virtual void EventLogIn(FString Method, bool bSuccess, FString CustomAttributesJSON) override;

@@ -42,11 +42,36 @@ class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 
 	/** */
 	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Setup")
+	virtual void WriteError(FString Log, int32 Code);
+
+	/** */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Setup")
 	bool IsInitialized() const;
 
 protected:
 	/** */
 	bool bCrashlyticsInitialized;
+
+
+	/////////////////////////////////////////////////////////////////////////
+	// Crashlytics Keys
+
+public:
+	/** */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Keys")
+	virtual void SetObjectValue(FString Key, FString Value);
+
+	/** */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Keys")
+	virtual void SetIntValue(FString Key, int32 Value);
+
+	/** */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Keys")
+	virtual void SetBoolValue(FString Key, bool Value);
+
+	/** */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Keys")
+	virtual void SetFloatValue(FString Key, float Value);
 
 
 	/////////////////////////////////////////////////////////////////////////

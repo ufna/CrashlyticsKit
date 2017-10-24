@@ -73,8 +73,40 @@ void UCrashlyticsKit_iOS::SetUserName(FString UserName)
 void UCrashlyticsKit_iOS::WriteLog(FString Log)
 {
 	UCrashlyticsKitProxy::WriteLog(Log);
-	
 	CLS_LOG(@"%@", Log.GetNSString());
+}
+
+void UCrashlyticsKit_iOS::WriteError(FString Log, int32 Code)
+{
+	NSError *error = [NSError errorWithDomain: Log.GetNSString()
+										 code: Code
+									 userInfo: nil];
+
+	[CrashlyticsKit recordError:error];
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+// Crashlytics Keys
+
+void UCrashlyticsKit_iOS::SetObjectValue(FString Key, FString Value)
+{
+	[CrashlyticsKit setObjectValue : Value.GetNSString() forKey : Key.GetNSString()];
+}
+
+void UCrashlyticsKit_iOS::SetIntValue(FString Key, int32 Value)
+{
+	[CrashlyticsKit setIntValue : Value forKey : Key.GetNSString()];
+}
+
+void UCrashlyticsKit_iOS::SetBoolValue(FString Key, bool Value)
+{
+	[CrashlyticsKit setBoolValue : Value forKey : Key.GetNSString()];
+}
+
+void UCrashlyticsKit_iOS::SetFloatValue(FString Key, float Value)
+{
+	[CrashlyticsKit setFloatValue : Value forKey : Key.GetNSString()];
 }
 
 
