@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "CrashlyticsKitProxy.h"
 #include "CrashlyticsKit_iOS.generated.h"
 
 UCLASS()
