@@ -1,6 +1,7 @@
 // Copyright 2016 Vladimir Alyamkin. All Rights Reserved.
 
-#include "CrashlyticsKitPrivatePCH.h"
+#include "CrashlyticsKit_Android.h"
+#include "CrashlyticsKitCommon.h"
 
 #if WITH_CRASHLYTICS && PLATFORM_ANDROID
 	#include "Android/AndroidJNI.h"

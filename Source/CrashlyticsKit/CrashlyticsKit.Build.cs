@@ -8,6 +8,8 @@ namespace UnrealBuildTool.Rules
     {
         public CrashlyticsKit(ReadOnlyTargetRules Target) : base(Target)
         {
+            PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+
             bool bEnableCrashlyticsKit = true;
 
             PrivateIncludePaths.AddRange(
