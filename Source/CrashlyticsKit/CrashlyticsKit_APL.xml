@@ -6,12 +6,6 @@
     <setStringFromProperty result="CrashlyticsApiKey" ini="Engine" section="/Script/CrashlyticsKit.CrashlyticsKitSettings" property="CrashlyticsApiKey" default=""/>
   </init>
 
-  <resourceCopies>
-    <copyFile src="$S(PluginDir)/../../ThirdParty/AndroidLibs/$S(Architecture)/libcrashlytics.so" dst="$S(BuildDir)/libs/armeabi-v7a/libcrashlytics.so" />
-    <copyFile src="$S(PluginDir)/../../ThirdParty/AndroidLibs/$S(Architecture)/libcrashlytics-envelope.so" dst="$S(BuildDir)/libs/armeabi-v7a/libcrashlytics-envelope.so" />
-    <copyFile src="$S(PluginDir)/../../ThirdParty/AndroidLibs/$S(Architecture)/libunwind-crashlytics.so" dst="$S(BuildDir)/libs/armeabi-v7a/libunwind-crashlytics.so" />
-  </resourceCopies>
-
   <androidManifestUpdates>
     <addElements tag="application">
       <meta-data android:name="io.fabric.ApiKey" />
@@ -39,52 +33,241 @@
       -dontwarn com.crashlytics.**
     </insert>
   </proguardAdditions>
+  
+  <buildGradle>
+    <insert>
+      android {
+        dexOptions {
+          jumboMode true
+        }
 
-  <prebuildCopies>
-    <copyDir src="$S(PluginDir)/../../ThirdParty/Android" dst="$S(BuildDir)" />
-  </prebuildCopies>
+        afterEvaluate {
+          assembleDebug.finalizedBy(crashlyticsUploadSymbolsDebug)
+          assembleRelease.finalizedBy(crashlyticsUploadSymbolsRelease)
+        }
+      }
+
+      buildscript {
+        repositories {
+          maven { url 'https://maven.fabric.io/public' }
+        }
+
+        dependencies {
+          classpath 'io.fabric.tools:gradle:1.+'
+        }
+      }
+
+      apply plugin: 'io.fabric'
+
+      repositories {
+        maven { url 'https://maven.fabric.io/public' }
+      }
+
+      dependencies {
+        // Crashlytics Kit
+        compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+          transitive = true;
+        }
+
+        // NDK Kit
+        compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
+          transitive = true;
+        }
+      }
+
+      crashlytics {
+        enableNdk true
+        androidNdkOut 'src/main/obj/local'
+        androidNdkLibsOut 'src/main/libs'
+        manifestPath 'src/main/AndroidManifest.xml'
+      }
+    </insert>
+  </buildGradle>
 
   <gameActivityImportAdditions>
     <insert>
       import io.fabric.sdk.android.Fabric;
       import com.crashlytics.android.Crashlytics;
       import com.crashlytics.android.ndk.CrashlyticsNdk;
+      import com.crashlytics.android.answers.Answers;
+      import com.crashlytics.android.answers.AnswersEvent;
+      import com.crashlytics.android.answers.SignUpEvent;
+      import com.crashlytics.android.answers.LoginEvent;
+      import com.crashlytics.android.answers.CustomEvent;
+      import org.json.JSONObject;
+      import org.json.JSONException;
+      import org.json.JSONArray;
+      import java.util.Iterator;
     </insert>
   </gameActivityImportAdditions>
 
   <gameActivityClassAdditions>
     <insert>
-      public boolean bCrashlyticsInitialized = false;  
-      
-      public void AndroidThunkJava_ForceCrash() 
+      public boolean bCrashlyticsInitialized = false;
+
+      public void AndroidThunkJava_ForceCrash()
       {
-        Crashlytics.getInstance().crash();
-      }
-      
-      public void AndroidThunkJava_ForceException() 
-      {
-        throw new RuntimeException("This is a crash");
-      }
-      
-      public void AndroidThunkJava_SetUserIdentifier(String UserIdentifier) 
-      {
-        Crashlytics.setUserIdentifier(UserIdentifier);
+          Crashlytics.getInstance().crash();
       }
 
-      public void AndroidThunkJava_SetUserEmail(String UserEmail) 
+      public void AndroidThunkJava_ForceException()
       {
-        Crashlytics.setUserEmail(UserEmail);
+          throw new RuntimeException("This is a crash");
       }
-      
-      public void AndroidThunkJava_SetUserName(String UserName) 
+
+      public void AndroidThunkJava_SetUserIdentifier(String UserIdentifier)
       {
-        Crashlytics.setUserName(UserName);
+          Crashlytics.setUserIdentifier(UserIdentifier);
       }
-      
-      public void AndroidThunkJava_WriteLog(String Log) 
+
+      public void AndroidThunkJava_SetUserEmail(String UserEmail)
       {
-        Crashlytics.log(Log);
+          Crashlytics.setUserEmail(UserEmail);
       }
+
+      public void AndroidThunkJava_SetUserName(String UserName)
+      {
+          Crashlytics.setUserName(UserName);
+      }
+
+      public void AndroidThunkJava_WriteLog(String Log)
+      {
+          Crashlytics.log(Log);
+      }
+
+      public void AndroidThunkJava_WriteError(String Log, int Code)
+      {
+          Crashlytics.logException(new RuntimeException(String.format("Native code error[code %d]:\n%s", Code, Log)));
+      }
+
+      public void AndroidThunkJava_SetObjectValue(String Key, String Value)
+      {
+          Crashlytics.setString(Key, Value);
+      }
+
+      public void AndroidThunkJava_SetIntValue(String Key, int Value)
+      {
+          Crashlytics.setInt(Key, Value);
+      }
+
+      public void AndroidThunkJava_SetFloatValue(String Key, float Value)
+      {
+          Crashlytics.setFloat(Key, Value);
+      }
+
+      void FillEventCustomAttributesFromJSONObject(AnswersEvent event, JSONObject object, String parentKey) throws JSONException
+      {
+          Iterator&lt;?&gt; keys = object.keys();
+
+          while(keys.hasNext())
+          {
+              String key = (String)keys.next();
+              Object value = object.get(key);
+              String childKey = "";
+
+              if(!parentKey.isEmpty())
+              {
+                  childKey.concat(".");
+              }
+
+              FillEventCustomAttributesFromJSONValue(event, value, childKey);
+          }
+      }
+
+      void FillEventCustomAttributesFromJSONArray(AnswersEvent event, JSONArray array, String parentKey) throws JSONException
+      {
+          for(int index = 0; index &lt; array.length(); ++index)
+          {
+              Object value = array.get(index);
+              FillEventCustomAttributesFromJSONValue(event, value, parentKey.concat("[" + Integer.toString(index) + "]"));
+          }
+      }
+
+      AnswersEvent FillEventCustomAttributesFromJSONValue(AnswersEvent event, Object value, String parentKey) throws JSONException
+      {
+          if(value instanceof JSONArray)
+          {
+              FillEventCustomAttributesFromJSONArray(event, (JSONArray)value, parentKey);
+          }
+          else if(value instanceof JSONObject)
+          {
+              FillEventCustomAttributesFromJSONObject(event, (JSONObject)value, parentKey);
+          }
+          else if(value instanceof Integer ||
+                  value instanceof Long ||
+                  value instanceof Float ||
+                  value instanceof Double)
+          {
+              event.putCustomAttribute(parentKey, (Number)value);
+          }
+          else
+          {
+              event.putCustomAttribute(parentKey, (String)value);
+          }
+
+          return event;
+      }
+
+      public void AndroidThunkJava_EventSignUp(String Method, boolean bSuccess, String CustomAttributesJSON)
+      {
+          SignUpEvent event = new SignUpEvent().putMethod(Method).putSuccess(bSuccess);
+
+          if(!CustomAttributesJSON.isEmpty())
+          {
+              try
+              {
+                  FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
+              }
+              catch (Throwable exception)
+              {
+                  String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
+                  Crashlytics.logException(new RuntimeException(errorString));
+              }
+          }
+
+          Answers.getInstance().logSignUp(event);
+      }
+
+      public void AndroidThunkJava_EventLogIn(String Method, boolean bSuccess, String CustomAttributesJSON)
+      {
+          LoginEvent event = new LoginEvent().putMethod(Method).putSuccess(bSuccess);
+
+          if(!CustomAttributesJSON.isEmpty())
+          {
+              try
+              {
+                  FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
+              }
+              catch (Throwable exception)
+              {
+                  String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
+                  Crashlytics.logException(new RuntimeException(errorString));
+              }
+          }
+
+          Answers.getInstance().logLogin(event);
+      }
+
+      public void AndroidThunkJava_EventCustom(String EventName, String CustomAttributesJSON)
+      {
+          CustomEvent event = new CustomEvent(EventName);
+
+          if(!CustomAttributesJSON.isEmpty())
+          {
+              try
+              {
+                  FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
+              }
+              catch (Throwable exception)
+              {
+                  String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
+                  Crashlytics.logException(new RuntimeException(errorString));
+              }
+          }
+
+          Answers.getInstance().logCustom(event);
+      }
+
     </insert>
   </gameActivityClassAdditions>
 
@@ -92,12 +275,13 @@
     <insert>
       if(!bCrashlyticsInitialized) 
       {
-        final Fabric fabric = new Fabric.Builder(GameActivity._activity)
-                                        .kits(new Crashlytics(), new CrashlyticsNdk())
-                                        .build();
-        Fabric.with(fabric);
+          final Fabric fabric = new Fabric.Builder(this)
+                                          .kits(new Crashlytics(), new CrashlyticsNdk())
+                                          .debuggable(true)
+                                          .build();
+          Fabric.with(fabric);
 
-        bCrashlyticsInitialized = true;
+          bCrashlyticsInitialized = true;
       }
     </insert>
   </gameActivityOnCreateAdditions>
