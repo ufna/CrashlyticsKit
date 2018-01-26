@@ -5,6 +5,12 @@
 #include "CrashlyticsKitProxy.h"
 #include "CrashlyticsKitSettings.h"
 
+#if PLATFORM_IOS
+#include "CrashlyticsKit_iOS.h"
+#elif PLATFORM_ANDROID
+#include "CrashlyticsKit_Android.h"
+#endif
+
 #include "UObject/Package.h"
 #include "Misc/ConfigCacheIni.h"
 
