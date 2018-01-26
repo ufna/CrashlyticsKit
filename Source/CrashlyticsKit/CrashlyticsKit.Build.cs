@@ -8,8 +8,7 @@ namespace UnrealBuildTool.Rules
     {
         public CrashlyticsKit(ReadOnlyTargetRules Target) : base(Target)
         {
-            const bool bEnableCrashlyticsKit = true;
-            Definitions.Add("WITH_CRASHLYTICS=" + (bEnableCrashlyticsKit ? "1" : "0"));
+            bool bEnableCrashlyticsKit = true;
 
             PrivateIncludePaths.AddRange(
                 new string[] {
@@ -59,10 +58,12 @@ namespace UnrealBuildTool.Rules
                            "Launch"
                         });
 
-                    string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, BuildConfiguration.RelativeEnginePath);
+                    string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
                     AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(PluginPath, "CrashlyticsKit_APL.xml")));
                 }
             }
+			
+			Definitions.Add("WITH_CRASHLYTICS=" + (bEnableCrashlyticsKit ? "1" : "0"));
         }
     }
 }

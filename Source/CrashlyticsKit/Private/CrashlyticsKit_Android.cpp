@@ -93,7 +93,89 @@ void UCrashlyticsKit_Android::WriteLog(FString Log)
 
 void UCrashlyticsKit_Android::WriteError(FString Log, int32 Code)
 {
-	
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring LogJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Log));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_WriteError", "(Ljava/lang/String;I)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, LogJava, Code);
+		Env->DeleteLocalRef(LogJava);
+	}
 }
+
+void UCrashlyticsKit_Android::SetObjectValue(FString Key, FString Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		jstring ValueJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Value));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetObjectValue", "(Ljava/lang/String;Ljava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, ValueJava);
+		Env->DeleteLocalRef(ValueJava);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+
+void UCrashlyticsKit_Android::SetIntValue(FString Key, int32 Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetIntValue", "(Ljava/lang/String;I)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, Value);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+
+void UCrashlyticsKit_Android::SetFloatValue(FString Key, float Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetFloatValue", "(Ljava/lang/String;F)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, Value);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+
+void UCrashlyticsKit_Android::EventSignUp(FString MethodName, bool bSuccess, FString CustomAttributesJSON)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring MethodJava = Env->NewStringUTF(TCHAR_TO_UTF8(*MethodName));
+		jstring CustomAttributesJSONJava = Env->NewStringUTF(TCHAR_TO_UTF8(*CustomAttributesJSON));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_EventSignUp", "(Ljava/lang/String;ZLjava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, MethodJava, bSuccess, CustomAttributesJSONJava);
+		Env->DeleteLocalRef(CustomAttributesJSONJava);
+		Env->DeleteLocalRef(MethodJava);
+	}
+}
+
+void UCrashlyticsKit_Android::EventLogIn(FString MethodName, bool bSuccess, FString CustomAttributesJSON)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring MethodJava = Env->NewStringUTF(TCHAR_TO_UTF8(*MethodName));
+		jstring CustomAttributesJSONJava = Env->NewStringUTF(TCHAR_TO_UTF8(*CustomAttributesJSON));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_EventLogIn", "(Ljava/lang/String;ZLjava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, MethodJava, bSuccess, CustomAttributesJSONJava);
+		Env->DeleteLocalRef(CustomAttributesJSONJava);
+		Env->DeleteLocalRef(MethodJava);
+	}
+}
+
+void UCrashlyticsKit_Android::EventCustom(FString EventName, FString CustomAttributesJSON)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring EventNameJava = Env->NewStringUTF(TCHAR_TO_UTF8(*EventName));
+		jstring CustomAttributesJSONJava = Env->NewStringUTF(TCHAR_TO_UTF8(*CustomAttributesJSON));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_EventCustom", "(Ljava/lang/String;Ljava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, EventNameJava, CustomAttributesJSONJava);
+		Env->DeleteLocalRef(CustomAttributesJSONJava);
+		Env->DeleteLocalRef(EventNameJava);
+	}
+}
+
+
 
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID
