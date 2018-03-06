@@ -7,6 +7,7 @@ UCrashlyticsKitProxy::UCrashlyticsKitProxy(const FObjectInitializer& ObjectIniti
 	: Super(ObjectInitializer)
 {
 	bCrashlyticsInitialized = false;
+	LastFrameNumber = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -14,6 +15,8 @@ UCrashlyticsKitProxy::UCrashlyticsKitProxy(const FObjectInitializer& ObjectIniti
 
 void UCrashlyticsKitProxy::InitCrashlytics()
 {
+	bCrashlyticsInitialized = true;
+
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: Null proxy used"), *VA_FUNC_LINE);
 }
 
@@ -44,12 +47,29 @@ void UCrashlyticsKitProxy::SetUserName(FString UserName)
 
 void UCrashlyticsKitProxy::WriteLog(FString Log)
 {
+	if (LastFrameNumber != GFrameCounter)
+	{
+		LastFrameNumber = GFrameCounter;
+		WriteLog(FString::Printf(TEXT("Frame: %d"), GFrameCounter));
+	}
+
 	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s"), *VA_FUNC_LINE, *Log);
 }
 
 void UCrashlyticsKitProxy::WriteError(FString Log, int32 Code)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s (%d)"), *VA_FUNC_LINE, *Log, Code);
+	if (LastFrameNumber != GFrameCounter)
+	{
+		LastFrameNumber = GFrameCounter;
+		WriteLog(FString::Printf(TEXT("Frame: %d"), GFrameCounter));
+	}
+
+	UE_LOG(LogVftCrashlytics, Error, TEXT("%s: %s (%d)"), *VA_FUNC_LINE, *Log, Code);
+}
+
+void UCrashlyticsKitProxy::WriteStat(FString Label, FString Value)
+{
+	SetObjectValue(Label, Value);
 }
 
 bool UCrashlyticsKitProxy::IsInitialized() const
@@ -63,22 +83,22 @@ bool UCrashlyticsKitProxy::IsInitialized() const
 
 void UCrashlyticsKitProxy::SetObjectValue(FString Key, FString Value)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %s"), *VA_FUNC_LINE, *Key, *Value);
+	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: %s -- %s"), *VA_FUNC_LINE, *Key, *Value);
 }
 
 void UCrashlyticsKitProxy::SetIntValue(FString Key, int32 Value)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %d"), *VA_FUNC_LINE, *Key, Value);
+	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: %s -- %d"), *VA_FUNC_LINE, *Key, Value);
 }
 
 void UCrashlyticsKitProxy::SetBoolValue(FString Key, bool Value)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %d"), *VA_FUNC_LINE, *Key, (int32)Value);
+	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: %s -- %d"), *VA_FUNC_LINE, *Key, (int32)Value);
 }
 
 void UCrashlyticsKitProxy::SetFloatValue(FString Key, float Value)
 {
-	UE_LOG(LogVftCrashlytics, Warning, TEXT("%s: %s -- %f"), *VA_FUNC_LINE, *Key, Value);
+	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: %s -- %f"), *VA_FUNC_LINE, *Key, Value);
 }
 
 

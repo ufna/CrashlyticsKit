@@ -79,6 +79,7 @@ void UCrashlyticsKit_iOS::WriteLog(FString Log)
 
 void UCrashlyticsKit_iOS::WriteError(FString Log, int32 Code)
 {
+	UCrashlyticsKitProxy::WriteError(Log, Code);
 	NSError *error = [NSError errorWithDomain: Log.GetNSString()
 										 code: Code
 									 userInfo: nil];

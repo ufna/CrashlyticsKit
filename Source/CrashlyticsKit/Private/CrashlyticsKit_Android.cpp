@@ -83,6 +83,8 @@ void UCrashlyticsKit_Android::SetUserName(FString UserName)
 
 void UCrashlyticsKit_Android::WriteLog(FString Log)
 {
+	UCrashlyticsKitProxy::WriteLog(Log);
+
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		jstring LogJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Log));
@@ -94,6 +96,8 @@ void UCrashlyticsKit_Android::WriteLog(FString Log)
 
 void UCrashlyticsKit_Android::WriteError(FString Log, int32 Code)
 {
+	UCrashlyticsKitProxy::WriteError(Log, Code);
+
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		jstring LogJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Log));

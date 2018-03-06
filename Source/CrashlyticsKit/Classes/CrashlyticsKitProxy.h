@@ -44,6 +44,10 @@ class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Setup")
 	virtual void WriteError(FString Log, int32 Code);
 
+	/** Write string stat */
+	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Setup")
+	virtual void WriteStat(FString Label, FString Value);
+
 	/** */
 	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Setup")
 	bool IsInitialized() const;
@@ -51,7 +55,9 @@ class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 protected:
 	/** */
 	bool bCrashlyticsInitialized;
-
+	
+	/** */
+	uint64 LastFrameNumber;
 
 	/////////////////////////////////////////////////////////////////////////
 	// Crashlytics Keys

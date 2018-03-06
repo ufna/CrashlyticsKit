@@ -10,13 +10,11 @@
 #import <Crashlytics/Crashlytics.h>
 #endif // WITH_CRASHLYTICS && PLATFORM_IOS
 
-#if WITH_CRASHLYTICS && PLATFORM_IOS
-	#define CLSLOG(Text) if(UCrashlyticsKitLibrary::GetCrashlyticsProxy()->IsInitialized()) CLS_LOG(@"%@", FString(Text).GetNSString());
-#else
-	#define CLSLOG(Text) if(UCrashlyticsKitLibrary::GetCrashlyticsProxy()->IsInitialized()) UCrashlyticsKitLibrary::GetCrashlyticsProxy()->WriteLog(Text);
-#endif
+#define CLSLOG(Text) if (UCrashlyticsKitLibrary::GetCrashlyticsProxy()->IsInitialized()) UCrashlyticsKitLibrary::GetCrashlyticsProxy()->WriteLog(Text);
 
-#define CLSERROR(Text, Code) if(UCrashlyticsKitLibrary::GetCrashlyticsProxy()->IsInitialized()) UCrashlyticsKitLibrary::GetCrashlyticsProxy()->WriteError(Text, Code);
+#define CLSERROR(Text, Code) if (UCrashlyticsKitLibrary::GetCrashlyticsProxy()->IsInitialized()) UCrashlyticsKitLibrary::GetCrashlyticsProxy()->WriteError(Text, Code);
+
+#define CLSSTAT(Label, Value) if (UCrashlyticsKitLibrary::GetCrashlyticsProxy()->IsInitialized()) UCrashlyticsKitLibrary::GetCrashlyticsProxy()->WriteStat(Label, Value);
 
 UCLASS()
 class CRASHLYTICSKIT_API UCrashlyticsKitLibrary : public UBlueprintFunctionLibrary
