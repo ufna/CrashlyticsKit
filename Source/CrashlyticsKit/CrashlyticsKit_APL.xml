@@ -65,12 +65,12 @@
 
       dependencies {
         // Crashlytics Kit
-        compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
           transitive = true;
-        }
+       }
 
         // NDK Kit
-        compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
+        compile('com.crashlytics.sdk.android:crashlytics-ndk:2.0.4@aar') {
           transitive = true;
         }
       }
