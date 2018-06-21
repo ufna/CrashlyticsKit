@@ -4,15 +4,18 @@
   <init>
     <log text="Crashlytics Kit IOS Initialization"/>
     <setStringFromProperty result="CrashlyticsApiKey" ini="Engine" section="/Script/CrashlyticsKit.CrashlyticsKitSettings" property="CrashlyticsApiKey" default=""/>
+    <setBoolFromProperty result="bEnableCrashlytics" ini="Engine" section="/Script/CrashlyticsKit.CrashlyticsKitSettings" property="bEnableCrashlytics" default="false"/>
   </init>
 
   <iosPListUpdates>
-    <addElements tag="dict" once="true">
-      <key>Fabric</key>
-    </addElements>
+    <if condition="bEnableCrashlytics">
+      <addElements tag="dict" once="true">
+        <key>Fabric</key>
+      </addElements>
 
-    <setElement result="FabricKey" xml="&lt;dict&gt;&lt;key&gt;APIKey&lt;/key&gt;&lt;string&gt;$S(CrashlyticsApiKey)&lt;/string&gt;&lt;key&gt;Kits&lt;/key&gt;&lt;array&gt;&lt;dict&gt;&lt;key&gt;KitInfo&lt;/key&gt;&lt;dict/&gt;&lt;key&gt;KitName&lt;/key&gt;&lt;string&gt;Crashlytics&lt;/string&gt;&lt;/dict&gt;&lt;/array&gt;&lt;/dict&gt;"/>
+      <setElement result="FabricKey" xml="&lt;dict&gt;&lt;key&gt;APIKey&lt;/key&gt;&lt;string&gt;$S(CrashlyticsApiKey)&lt;/string&gt;&lt;key&gt;Kits&lt;/key&gt;&lt;array&gt;&lt;dict&gt;&lt;key&gt;KitInfo&lt;/key&gt;&lt;dict/&gt;&lt;key&gt;KitName&lt;/key&gt;&lt;string&gt;Crashlytics&lt;/string&gt;&lt;/dict&gt;&lt;/array&gt;&lt;/dict&gt;"/>
 
-    <addElement tag="dict" name="FabricKey" once="true" />
+      <addElement tag="dict" name="FabricKey" once="true" />
+    </if>
   </iosPListUpdates>
 </root>

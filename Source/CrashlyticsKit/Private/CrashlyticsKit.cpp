@@ -27,7 +27,8 @@ class FCrashlyticsKit : public ICrashlyticsKit
 		KitSettings->AddToRoot();
 
 		// We need to manually load the config properties here, as this module is loaded before the UObject system is setup to do this
-		GConfig->GetBool(TEXT("/Script/CrashlyticsKit.CrashlyticsKitSettings"), TEXT("CrashlyticsManualInit"), KitSettings->bCrashlyticsManualInit, GEngineIni);
+		GConfig->GetBool(TEXT("/Script/CrashlyticsKit.CrashlyticsKitSettings"), TEXT("bCrashlyticsManualInit"), KitSettings->bCrashlyticsManualInit, GEngineIni);
+		GConfig->GetBool(TEXT("/Script/CrashlyticsKit.CrashlyticsKitSettings"), TEXT("bEnableCrashlytics"), KitSettings->bEnableCrashlytics, GEngineIni);
 
 		// Register settings
 		if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
@@ -42,11 +43,14 @@ class FCrashlyticsKit : public ICrashlyticsKit
 		// Proxy class depends on platform
 		UClass* KitPlatformClass = UCrashlyticsKitProxy::StaticClass();
 #if WITH_CRASHLYTICS
+		if (KitSettings->bEnableCrashlytics)
+		{
 #if PLATFORM_IOS
-		KitPlatformClass = UCrashlyticsKit_iOS::StaticClass();
+			KitPlatformClass = UCrashlyticsKit_iOS::StaticClass();
 #elif PLATFORM_ANDROID
-		KitPlatformClass = UCrashlyticsKit_Android::StaticClass();
+			KitPlatformClass = UCrashlyticsKit_Android::StaticClass();
 #endif
+		}
 #endif
 
 		// Create crashlytics kit proxy and initalize module by default
