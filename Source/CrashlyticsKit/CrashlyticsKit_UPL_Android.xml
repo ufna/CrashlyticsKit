@@ -9,293 +9,305 @@
 
   <androidManifestUpdates>
     <if condition="bEnableCrashlytics">
-      <addElements tag="application">
-        <meta-data android:name="io.fabric.ApiKey" />
-      </addElements>
+      <true>
+        <addElements tag="application">
+          <meta-data android:name="io.fabric.ApiKey" />
+        </addElements>
 
-      <loopElements tag="meta-data">
-        <setStringFromAttribute result="metaDataName" tag="$" name="android:name"/>
-        <setBoolIsEqual result="bFabricApiKey" arg1="$S(metaDataName)" arg2="io.fabric.ApiKey"/>
-        <if condition="bFabricApiKey">
-          <true>
-            <addAttribute tag="$" name="android:value" value="$S(CrashlyticsApiKey)"/>
-          </true>
-        </if>
-      </loopElements>
+        <loopElements tag="meta-data">
+          <setStringFromAttribute result="metaDataName" tag="$" name="android:name"/>
+          <setBoolIsEqual result="bFabricApiKey" arg1="$S(metaDataName)" arg2="io.fabric.ApiKey"/>
+          <if condition="bFabricApiKey">
+            <true>
+              <addAttribute tag="$" name="android:value" value="$S(CrashlyticsApiKey)"/>
+            </true>
+          </if>
+        </loopElements>
+      </true>
     </if>
   </androidManifestUpdates>
 
   <proguardAdditions>
     <if condition="bEnableCrashlytics">
-      <insert>
-        -keepattributes *Annotation*
-        -keepattributes SourceFile,LineNumberTable
+      <true>
+        <insert>
+          -keepattributes *Annotation*
+          -keepattributes SourceFile,LineNumberTable
 
-        -keep public class * extends java.lang.Exception
-        -keep class com.crashlytics.** { *; }
+          -keep public class * extends java.lang.Exception
+          -keep class com.crashlytics.** { *; }
 
-        -dontwarn com.crashlytics.**
-      </insert>
+          -dontwarn com.crashlytics.**
+        </insert>
+      </true>
     </if>
   </proguardAdditions>
   
   <buildGradle>
     <if condition="bEnableCrashlytics">
-      <insert>
-        android {
-          dexOptions {
-            jumboMode true
+      <true>
+        <insert>
+          android {
+            dexOptions {
+              jumboMode true
+            }
+
+            afterEvaluate {
+              assembleDebug.finalizedBy(crashlyticsUploadSymbolsDebug)
+              assembleRelease.finalizedBy(crashlyticsUploadSymbolsRelease)
+            }
           }
 
-          afterEvaluate {
-            assembleDebug.finalizedBy(crashlyticsUploadSymbolsDebug)
-            assembleRelease.finalizedBy(crashlyticsUploadSymbolsRelease)
-          }
-        }
+          buildscript {
+            repositories {
+              maven { url 'https://maven.fabric.io/public' }
+            }
 
-        buildscript {
+            dependencies {
+              classpath 'io.fabric.tools:gradle:1.+'
+            }
+          }
+
+          apply plugin: 'io.fabric'
+
           repositories {
             maven { url 'https://maven.fabric.io/public' }
           }
 
           dependencies {
-            classpath 'io.fabric.tools:gradle:1.+'
+            // Crashlytics Kit
+            compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+              transitive = true;
+           }
+
+            // NDK Kit
+            compile('com.crashlytics.sdk.android:crashlytics-ndk:2.0.4@aar') {
+              transitive = true;
+            }
           }
-        }
 
-        apply plugin: 'io.fabric'
-
-        repositories {
-          maven { url 'https://maven.fabric.io/public' }
-        }
-
-        dependencies {
-          // Crashlytics Kit
-          compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
-            transitive = true;
-         }
-
-          // NDK Kit
-          compile('com.crashlytics.sdk.android:crashlytics-ndk:2.0.4@aar') {
-            transitive = true;
+          crashlytics {
+            enableNdk true
+            androidNdkOut 'src/main/obj/local'
+            androidNdkLibsOut 'src/main/libs'
+            manifestPath 'src/main/AndroidManifest.xml'
           }
-        }
-
-        crashlytics {
-          enableNdk true
-          androidNdkOut 'src/main/obj/local'
-          androidNdkLibsOut 'src/main/libs'
-          manifestPath 'src/main/AndroidManifest.xml'
-        }
-      </insert>
+        </insert>
+      </true>
     </if>
   </buildGradle>
 
   <gameActivityImportAdditions>
     <if condition="bEnableCrashlytics">
-      <insert>
-        import io.fabric.sdk.android.Fabric;
-        import com.crashlytics.android.Crashlytics;
-        import com.crashlytics.android.ndk.CrashlyticsNdk;
-        import com.crashlytics.android.answers.Answers;
-        import com.crashlytics.android.answers.AnswersEvent;
-        import com.crashlytics.android.answers.SignUpEvent;
-        import com.crashlytics.android.answers.LoginEvent;
-        import com.crashlytics.android.answers.CustomEvent;
-        import org.json.JSONObject;
-        import org.json.JSONException;
-        import org.json.JSONArray;
-        import java.util.Iterator;
-      </insert>
+      <true>
+        <insert>
+          import io.fabric.sdk.android.Fabric;
+          import com.crashlytics.android.Crashlytics;
+          import com.crashlytics.android.ndk.CrashlyticsNdk;
+          import com.crashlytics.android.answers.Answers;
+          import com.crashlytics.android.answers.AnswersEvent;
+          import com.crashlytics.android.answers.SignUpEvent;
+          import com.crashlytics.android.answers.LoginEvent;
+          import com.crashlytics.android.answers.CustomEvent;
+          import org.json.JSONObject;
+          import org.json.JSONException;
+          import org.json.JSONArray;
+          import java.util.Iterator;
+        </insert>
+      </true>
     </if>
   </gameActivityImportAdditions>
 
   <gameActivityClassAdditions>
     <if condition="bEnableCrashlytics">
-      <insert>
-        public boolean bCrashlyticsInitialized = false;
+      <true>
+        <insert>
+          public boolean bCrashlyticsInitialized = false;
 
-        public void AndroidThunkJava_ForceCrash()
-        {
-            Crashlytics.getInstance().crash();
-        }
+          public void AndroidThunkJava_ForceCrash()
+          {
+              Crashlytics.getInstance().crash();
+          }
 
-        public void AndroidThunkJava_ForceException()
-        {
-            throw new RuntimeException("This is a crash");
-        }
+          public void AndroidThunkJava_ForceException()
+          {
+              throw new RuntimeException("This is a crash");
+          }
 
-        public void AndroidThunkJava_SetUserIdentifier(String UserIdentifier)
-        {
-            Crashlytics.setUserIdentifier(UserIdentifier);
-        }
+          public void AndroidThunkJava_SetUserIdentifier(String UserIdentifier)
+          {
+              Crashlytics.setUserIdentifier(UserIdentifier);
+          }
 
-        public void AndroidThunkJava_SetUserEmail(String UserEmail)
-        {
-            Crashlytics.setUserEmail(UserEmail);
-        }
+          public void AndroidThunkJava_SetUserEmail(String UserEmail)
+          {
+              Crashlytics.setUserEmail(UserEmail);
+          }
 
-        public void AndroidThunkJava_SetUserName(String UserName)
-        {
-            Crashlytics.setUserName(UserName);
-        }
+          public void AndroidThunkJava_SetUserName(String UserName)
+          {
+              Crashlytics.setUserName(UserName);
+          }
 
-        public void AndroidThunkJava_WriteLog(String Log)
-        {
-            Crashlytics.log(Log);
-        }
+          public void AndroidThunkJava_WriteLog(String Log)
+          {
+              Crashlytics.log(Log);
+          }
 
-        public void AndroidThunkJava_WriteError(String Log, int Code)
-        {
-            Crashlytics.logException(new RuntimeException(String.format("Native code error[code %d]:\n%s", Code, Log)));
-        }
+          public void AndroidThunkJava_WriteError(String Log, int Code)
+          {
+              Crashlytics.logException(new RuntimeException(String.format("Native code error[code %d]:\n%s", Code, Log)));
+          }
 
-        public void AndroidThunkJava_SetObjectValue(String Key, String Value)
-        {
-            Crashlytics.setString(Key, Value);
-        }
+          public void AndroidThunkJava_SetObjectValue(String Key, String Value)
+          {
+              Crashlytics.setString(Key, Value);
+          }
 
-        public void AndroidThunkJava_SetIntValue(String Key, int Value)
-        {
-            Crashlytics.setInt(Key, Value);
-        }
+          public void AndroidThunkJava_SetIntValue(String Key, int Value)
+          {
+              Crashlytics.setInt(Key, Value);
+          }
 
-        public void AndroidThunkJava_SetFloatValue(String Key, float Value)
-        {
-            Crashlytics.setFloat(Key, Value);
-        }
+          public void AndroidThunkJava_SetFloatValue(String Key, float Value)
+          {
+              Crashlytics.setFloat(Key, Value);
+          }
 
-        void FillEventCustomAttributesFromJSONObject(AnswersEvent event, JSONObject object, String parentKey) throws JSONException
-        {
-            Iterator&lt;?&gt; keys = object.keys();
+          void FillEventCustomAttributesFromJSONObject(AnswersEvent event, JSONObject object, String parentKey) throws JSONException
+          {
+              Iterator&lt;?&gt; keys = object.keys();
 
-            while(keys.hasNext())
-            {
-                String key = (String)keys.next();
-                Object value = object.get(key);
-                String childKey = "";
+              while(keys.hasNext())
+              {
+                  String key = (String)keys.next();
+                  Object value = object.get(key);
+                  String childKey = "";
 
-                if(!parentKey.isEmpty())
-                {
-                    childKey.concat(".");
-                }
+                  if(!parentKey.isEmpty())
+                  {
+                      childKey.concat(".");
+                  }
 
-                FillEventCustomAttributesFromJSONValue(event, value, childKey);
-            }
-        }
+                  FillEventCustomAttributesFromJSONValue(event, value, childKey);
+              }
+          }
 
-        void FillEventCustomAttributesFromJSONArray(AnswersEvent event, JSONArray array, String parentKey) throws JSONException
-        {
-            for(int index = 0; index &lt; array.length(); ++index)
-            {
-                Object value = array.get(index);
-                FillEventCustomAttributesFromJSONValue(event, value, parentKey.concat("[" + Integer.toString(index) + "]"));
-            }
-        }
+          void FillEventCustomAttributesFromJSONArray(AnswersEvent event, JSONArray array, String parentKey) throws JSONException
+          {
+              for(int index = 0; index &lt; array.length(); ++index)
+              {
+                  Object value = array.get(index);
+                  FillEventCustomAttributesFromJSONValue(event, value, parentKey.concat("[" + Integer.toString(index) + "]"));
+              }
+          }
 
-        AnswersEvent FillEventCustomAttributesFromJSONValue(AnswersEvent event, Object value, String parentKey) throws JSONException
-        {
-            if(value instanceof JSONArray)
-            {
-                FillEventCustomAttributesFromJSONArray(event, (JSONArray)value, parentKey);
-            }
-            else if(value instanceof JSONObject)
-            {
-                FillEventCustomAttributesFromJSONObject(event, (JSONObject)value, parentKey);
-            }
-            else if(value instanceof Integer ||
-                    value instanceof Long ||
-                    value instanceof Float ||
-                    value instanceof Double)
-            {
-                event.putCustomAttribute(parentKey, (Number)value);
-            }
-            else
-            {
-                event.putCustomAttribute(parentKey, (String)value);
-            }
+          AnswersEvent FillEventCustomAttributesFromJSONValue(AnswersEvent event, Object value, String parentKey) throws JSONException
+          {
+              if(value instanceof JSONArray)
+              {
+                  FillEventCustomAttributesFromJSONArray(event, (JSONArray)value, parentKey);
+              }
+              else if(value instanceof JSONObject)
+              {
+                  FillEventCustomAttributesFromJSONObject(event, (JSONObject)value, parentKey);
+              }
+              else if(value instanceof Integer ||
+                      value instanceof Long ||
+                      value instanceof Float ||
+                      value instanceof Double)
+              {
+                  event.putCustomAttribute(parentKey, (Number)value);
+              }
+              else
+              {
+                  event.putCustomAttribute(parentKey, (String)value);
+              }
 
-            return event;
-        }
+              return event;
+          }
 
-        public void AndroidThunkJava_EventSignUp(String Method, boolean bSuccess, String CustomAttributesJSON)
-        {
-            SignUpEvent event = new SignUpEvent().putMethod(Method).putSuccess(bSuccess);
+          public void AndroidThunkJava_EventSignUp(String Method, boolean bSuccess, String CustomAttributesJSON)
+          {
+              SignUpEvent event = new SignUpEvent().putMethod(Method).putSuccess(bSuccess);
 
-            if(!CustomAttributesJSON.isEmpty())
-            {
-                try
-                {
-                    FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
-                }
-                catch (Throwable exception)
-                {
-                    String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
-                    Crashlytics.logException(new RuntimeException(errorString));
-                }
-            }
+              if(!CustomAttributesJSON.isEmpty())
+              {
+                  try
+                  {
+                      FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
+                  }
+                  catch (Throwable exception)
+                  {
+                      String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
+                      Crashlytics.logException(new RuntimeException(errorString));
+                  }
+              }
 
-            Answers.getInstance().logSignUp(event);
-        }
+              Answers.getInstance().logSignUp(event);
+          }
 
-        public void AndroidThunkJava_EventLogIn(String Method, boolean bSuccess, String CustomAttributesJSON)
-        {
-            LoginEvent event = new LoginEvent().putMethod(Method).putSuccess(bSuccess);
+          public void AndroidThunkJava_EventLogIn(String Method, boolean bSuccess, String CustomAttributesJSON)
+          {
+              LoginEvent event = new LoginEvent().putMethod(Method).putSuccess(bSuccess);
 
-            if(!CustomAttributesJSON.isEmpty())
-            {
-                try
-                {
-                    FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
-                }
-                catch (Throwable exception)
-                {
-                    String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
-                    Crashlytics.logException(new RuntimeException(errorString));
-                }
-            }
+              if(!CustomAttributesJSON.isEmpty())
+              {
+                  try
+                  {
+                      FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
+                  }
+                  catch (Throwable exception)
+                  {
+                      String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
+                      Crashlytics.logException(new RuntimeException(errorString));
+                  }
+              }
 
-            Answers.getInstance().logLogin(event);
-        }
+              Answers.getInstance().logLogin(event);
+          }
 
-        public void AndroidThunkJava_EventCustom(String EventName, String CustomAttributesJSON)
-        {
-            CustomEvent event = new CustomEvent(EventName);
+          public void AndroidThunkJava_EventCustom(String EventName, String CustomAttributesJSON)
+          {
+              CustomEvent event = new CustomEvent(EventName);
 
-            if(!CustomAttributesJSON.isEmpty())
-            {
-                try
-                {
-                    FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
-                }
-                catch (Throwable exception)
-                {
-                    String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
-                    Crashlytics.logException(new RuntimeException(errorString));
-                }
-            }
+              if(!CustomAttributesJSON.isEmpty())
+              {
+                  try
+                  {
+                      FillEventCustomAttributesFromJSONValue(event, new JSONObject(CustomAttributesJSON),"");
+                  }
+                  catch (Throwable exception)
+                  {
+                      String errorString = String.format("Invalid json: %s.\n%s", CustomAttributesJSON, exception.toString());
+                      Crashlytics.logException(new RuntimeException(errorString));
+                  }
+              }
 
-            Answers.getInstance().logCustom(event);
-        }
+              Answers.getInstance().logCustom(event);
+          }
 
-      </insert>
+        </insert>
+      </true>
     </if>
   </gameActivityClassAdditions>
 
   <gameActivityOnCreateAdditions>
     <if condition="bEnableCrashlytics">
-      <insert>
-        if(!bCrashlyticsInitialized) 
-        {
-            final Fabric fabric = new Fabric.Builder(this)
-                                            .kits(new Crashlytics(), new CrashlyticsNdk())
-                                            .debuggable(true)
-                                            .build();
-            Fabric.with(fabric);
+      <true>
+        <insert>
+          if(!bCrashlyticsInitialized) 
+          {
+              final Fabric fabric = new Fabric.Builder(this)
+                                              .kits(new Crashlytics(), new CrashlyticsNdk())
+                                              .debuggable(true)
+                                              .build();
+              Fabric.with(fabric);
 
-            bCrashlyticsInitialized = true;
-        }
-      </insert>
+              bCrashlyticsInitialized = true;
+          }
+        </insert>
+      </true>
     </if>
   </gameActivityOnCreateAdditions>
 
