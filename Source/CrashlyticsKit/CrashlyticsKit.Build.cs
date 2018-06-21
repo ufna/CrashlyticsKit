@@ -51,6 +51,9 @@ namespace UnrealBuildTool.Rules
                             "../../ThirdParty/iOS/Crashlytics.embeddedframework.zip"
                         )
                     );
+
+                    string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
+                    AdditionalPropertiesForReceipt.Add("IOSPlugin", Path.Combine(PluginPath, "CrashlyticsKit_UPL_IOS.xml"));
                 }
                 else if (Target.Platform == UnrealTargetPlatform.Android)
                 {
@@ -61,7 +64,7 @@ namespace UnrealBuildTool.Rules
                         });
 
                     string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
-                    AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "CrashlyticsKit_APL.xml"));
+                    AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "CrashlyticsKit_UPL_Android.xml"));
                 }
             }
 			
