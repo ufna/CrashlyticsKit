@@ -88,8 +88,8 @@
 
           crashlytics {
             enableNdk true
-            androidNdkOut 'src/main/obj/local'
-            androidNdkLibsOut 'src/main/libs'
+            androidNdkOut 'src/main/jniLibs'
+            androidNdkLibsOut 'src/main/jniLibs'
             manifestPath 'src/main/AndroidManifest.xml'
           }
         </insert>
