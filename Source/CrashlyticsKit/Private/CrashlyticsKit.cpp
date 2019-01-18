@@ -11,8 +11,8 @@
 #include "CrashlyticsKit_Android.h"
 #endif
 
-#include "UObject/Package.h"
 #include "Misc/ConfigCacheIni.h"
+#include "UObject/Package.h"
 
 #include "Developer/Settings/Public/ISettingsModule.h"
 
@@ -36,8 +36,7 @@ class FCrashlyticsKit : public ICrashlyticsKit
 			SettingsModule->RegisterSettings("Project", "Plugins", "VaFabricTools",
 				LOCTEXT("RuntimeSettingsName", "Crashlytics Kit"),
 				LOCTEXT("RuntimeSettingsDescription", "Configure API keys for Crashlytics"),
-				KitSettings
-			);
+				KitSettings);
 		}
 
 		// Proxy class depends on platform
@@ -90,7 +89,6 @@ class FCrashlyticsKit : public ICrashlyticsKit
 private:
 	/** Holds the kit settings */
 	UCrashlyticsKitSettings* KitSettings;
-
 };
 
 IMPLEMENT_MODULE(FCrashlyticsKit, CrashlyticsKit)

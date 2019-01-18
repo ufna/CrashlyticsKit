@@ -55,7 +55,7 @@ class CRASHLYTICSKIT_API UCrashlyticsKitProxy : public UObject
 protected:
 	/** */
 	bool bCrashlyticsInitialized;
-	
+
 	/** */
 	uint64 LastFrameNumber;
 
@@ -78,7 +78,6 @@ public:
 	/** */
 	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Keys")
 	virtual void SetFloatValue(FString Key, float Value);
-
 
 	/////////////////////////////////////////////////////////////////////////
 	// Answers Events
@@ -107,5 +106,4 @@ public:
 	/** Event: Custom Event */
 	UFUNCTION(BlueprintCallable, Category = "Crashlytics|Answers", meta = (DisplayName = "Custom Event"))
 	virtual void EventCustom(FString EventName, FString CustomAttributesJSON = "");
-
 };

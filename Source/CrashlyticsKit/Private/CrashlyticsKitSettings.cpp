@@ -5,5 +5,4 @@
 UCrashlyticsKitSettings::UCrashlyticsKitSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
 }

@@ -30,5 +30,4 @@ class UCrashlyticsKit_Android : public UCrashlyticsKitProxy
 	virtual void EventCustom(FString EventName, FString CustomAttributesJSON = "") override;
 	// End UCrashlyticsKitProxy interface
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID
-
 };

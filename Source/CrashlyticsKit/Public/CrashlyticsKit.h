@@ -7,14 +7,13 @@
 class UCrashlyticsKitProxy;
 
 /**
- * The public interface to this module.  In most cases, this interface is only public to sibling modules 
+ * The public interface to this module.  In most cases, this interface is only public to sibling modules
  * within this plugin.
  */
 class ICrashlyticsKit : public IModuleInterface
 {
 
 public:
-
 	/**
 	 * Singleton-like access to this module's interface.  This is just for convenience!
 	 * Beware of calling this during the shutdown phase, though.  Your module might have been unloaded already.
@@ -23,7 +22,7 @@ public:
 	 */
 	static inline ICrashlyticsKit& Get()
 	{
-		return FModuleManager::LoadModuleChecked< ICrashlyticsKit >( "CrashlyticsKit" );
+		return FModuleManager::LoadModuleChecked<ICrashlyticsKit>("CrashlyticsKit");
 	}
 
 	/**
@@ -33,12 +32,9 @@ public:
 	 */
 	static inline bool IsAvailable()
 	{
-		return FModuleManager::Get().IsModuleLoaded( "CrashlyticsKit" );
+		return FModuleManager::Get().IsModuleLoaded("CrashlyticsKit");
 	}
-
 
 public:
 	UCrashlyticsKitProxy* CrashlyticsKitProxy;
-
 };
-

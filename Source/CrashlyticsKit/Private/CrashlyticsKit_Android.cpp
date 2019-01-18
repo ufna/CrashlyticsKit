@@ -4,15 +4,14 @@
 #include "CrashlyticsKitCommon.h"
 
 #if WITH_CRASHLYTICS && PLATFORM_ANDROID
-	#include "Android/AndroidJNI.h"
-	#include "Android/AndroidApplication.h"
-	#include <android_native_app_glue.h>
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+#include <android_native_app_glue.h>
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID
 
 UCrashlyticsKit_Android::UCrashlyticsKit_Android(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
 }
 
 #if WITH_CRASHLYTICS && PLATFORM_ANDROID
@@ -180,7 +179,5 @@ void UCrashlyticsKit_Android::EventCustom(FString EventName, FString CustomAttri
 		Env->DeleteLocalRef(EventNameJava);
 	}
 }
-
-
 
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID

@@ -8,7 +8,7 @@ UCLASS(config = Engine, defaultconfig)
 class UCrashlyticsKitSettings : public UObject
 {
 	GENERATED_UCLASS_BODY()
-	
+
 public:
 	/** Simple way to turn on/off Crashlytics */
 	UPROPERTY(Config, EditAnywhere)

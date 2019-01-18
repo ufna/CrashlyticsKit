@@ -77,7 +77,6 @@ bool UCrashlyticsKitProxy::IsInitialized() const
 	return bCrashlyticsInitialized;
 }
 
-
 /////////////////////////////////////////////////////////////////////////
 // Crashlytics Keys
 
@@ -100,7 +99,6 @@ void UCrashlyticsKitProxy::SetFloatValue(FString Key, float Value)
 {
 	UE_LOG(LogVftCrashlytics, Verbose, TEXT("%s: %s -- %f"), *VA_FUNC_LINE, *Key, Value);
 }
-
 
 /////////////////////////////////////////////////////////////////////////
 // Answers Events
