@@ -4,8 +4,8 @@
 #include "CrashlyticsKitCommon.h"
 
 #if WITH_CRASHLYTICS && PLATFORM_ANDROID
-#include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
 #include <android_native_app_glue.h>
 #endif // WITH_CRASHLYTICS && PLATFORM_ANDROID
 
